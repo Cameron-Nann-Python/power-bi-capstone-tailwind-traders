@@ -38,26 +38,24 @@ The final Excel spreadsheet containing country data is the `Countries.xlsx` file
 ### Configure Historical Currency Exchange Data
 A Python script will serve as the basis for currency conversion. To load the script, use the **Get Data** tab in the report home view. Choose the **More** option and Enter **Python** in the search bar so that the **Python Script** option appears. 
 
-<img width="848" height="497" alt="python-currency-conversion" src="https://github.com/user-attachments/assets/c23deb99-8254-4bbb-9bad-72271f38536a" />
-
-The script can be copied here:
+The script can be seen below:
 ```
 import pandas as pd
 from io import StringIO
 
 data = """Exchange ID;ExchangeRate;Exchange Currency
 1;1;USD
-2;0,75;GBP
-3;0,85;EUR
-4;3,67;AED
-5;1,3;AUD"""
+2;0.75;GBP
+3;0.85;EUR
+4;3.67;AED
+5;1.3;AUD"""
 df = pd.read_csv(StringIO(data), sep=';')
 
 # Return the transformed dataframe
 df
 ```
 
-The script takes the raw string data and loads it into a pandas DataFrame. StringIO is used so that the `pd.read_csv()` function can read the string data like a file. Ensure the name of the table is **Exchange Data**.
+The script takes the raw string data and loads it into a pandas DataFrame. StringIO is used so that the `pd.read_csv()` function can read the string data like a file. Ensure the name of the table is **Exchange Data** and the **ExchangeRate** column has data type **Fixed Decimal Number**. 
 
 ## Step 3: Design the Data Model
 
@@ -79,6 +77,83 @@ The relationship betweeen **Purchases** and **Sales** should be set on **OrderID
 <p align="center">
   <img width="830" height="947" alt="purchases-sales-relationship" src="https://github.com/user-attachments/assets/9e4f2a1e-50eb-4cc0-ab09-0b2f5a86b27a" />
 </p>
+
+### Add a Calendar Table
+To track dates of interest, a calendar table can be implemented with DAX expressions. In the **Model View** tab, navigate to the **Calculations** tab and select **New Table**. Use the follow code to implement calendar table named "CalendarTable". To perform data aggregations later, create **Month**, **Quarter**, **Weekday**, and **Day** columns.
+```
+CalendarTable = 
+ADDCOLUMNS(
+CALENDAR(DATE(2020, 1, 1), DATE(2023, 12, 31)),
+"Year", YEAR([Date]),
+"Month Number", MONTH([Date]),
+"Month", FORMAT([Date], "MMMM"),
+"Quarter", QUARTER([Date]),
+"Weekday", WEEKDAY([Date]),
+"Day", DAY([Date])
+)
+```
+
+Make sure the date formats between the **Date** column in **CalendarTable** match with the **Purchase Date** column in **Purchases** for consistency.
+
+<p align="center">
+  <img width="896" height="970" alt="match-date-formats" src="https://github.com/user-attachments/assets/41701e13-0817-4e97-9a85-6ee0d12d4ba1" />
+</p>
+
+A relationship between the calendar and **Purchases** should be set on the **Date** field with a many-to-one cardinality. The cross-filter direction should be set to both, and this is the active relationship.
+
+<p align="center">
+  <img width="832" height="928" alt="calendar-purchases-relationship" src="https://github.com/user-attachments/assets/f4034189-1b74-4dff-8acb-b64be8aa8b83" />
+</p>
+
+### Sales in USD Table
+This table serves to collect global sales for Tailwind Traders and convert them to USD to understand culminative sales performance. There should be many-to-one and one-to-one relationships across the tables, allowing for data to be pulled from multiple tables. Select the **New Table** option from the **Calculations** tab. The table creation methodology can be seen below: 
+- Use the ADDCOLUMNS() expression to gather column data
+- Start with the **Sales** table as a basis on which to add more columns.
+- Add a column named **Country Name** pulling **Country** column values from the **Countries** table to examine where a purchase was made.
+- Add a column named **Exchange Rate** pulling **Exchange Rate** column values from the **Exchange Data** table for currency conversion.
+- Add a column named **Exchange Currency** pulling **Exchange Currency** column values frome the **Exchange Data** table for currency type.
+- Add a calculated column named **Gross Revenue USD** which is derived from multiplying the **Gross Revenue** column values from the **Sales** table with the **Exchange Rate** column values from the **Exchange Data** table to get the gross revenue in USD.
+- Add a calculated column named **Net Revenue USD** which is derived from multiplying the **Net Revenue** column values from the **Sales** table with the **Exchange Rate** column values from the **Exchange Data** table to get the net revenue in USD.
+- Add a calculated column named **Total Tax USD** which is derived from multiplying the **Total Tax** column values from the **Sales** table with the **Exchange Rate** column values from the **Exchange Data** table to get the total tax in USD.
+
+The full DAX expression can be seen below:
+```
+Sales in USD = 
+ADDCOLUMNS(
+    Sales,
+    "Country Name", RELATED(Countries[Country]),
+    "Exchange Rate", RELATED('Exchange Data'[ExchangeRate]),
+    "Exchange Currency", RELATED('Exchange Data'[Exchange Currency]),
+    "Gross Revenue USD", [Gross Revenue] * RELATED('Exchange Data'[ExchangeRate]),
+    "Net Revenue USD", [Net Revenue] * RELATED('Exchange Data'[ExchangeRate]),
+    "Total Tax USD", [Total Tax] * RELATED('Exchange Data'[ExchangeRate])
+)
+```
+A relationship between the **Sales** and **Sales in USD** can be set on the **OrderID** column with a one-to-one cardinality. The cross-filter is set to both, and this is the active relationship.
+
+<p align="center">
+  <img width="827" height="932" alt="image" src="https://github.com/user-attachments/assets/b6e3db10-b9f9-43a5-b6a5-e1dcf6eea78b" />
+</p>
+
+## Step 4: Data Aggregations
+With a complete data model, calculations on the tables can be performed. 
+
+### Yearly Profit Margin
+To get the yearly profit margin, navigate to the **Model View**, click on the ellipsis next to the **Sales in USD** table name, and select **New Measure**. Divide the **Gross Revenue USD** column sum by the **Net Revenue USD** column sum to perform the calculation. The DAX logic can be seen below:
+
+```
+YearlyProfitMargin = DIVIDE(
+  'Sales in USD'[Gross Revenue USD],
+  'Sales in USD'[Net Revenue USD]
+)
+```
+Format this measure as percentage.
+
+### Quarterly Profit Margin
+To get a quarterly profit margin measure for the **Sales in USD** table, 
+
+### Quarterly Profit Margin
+
 
 ## Technologies Used
 - Microsoft Excel
