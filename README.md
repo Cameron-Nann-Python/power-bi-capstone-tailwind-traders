@@ -1,5 +1,10 @@
 # Power BI Capstone Project: Tailwind Traders
 
+## Table of Contents
+
+[Overview](##Overview)
+[Step 3: Design the Data Model](##Step3: Design the Data Model)
+
 ## Overview
 This capstone project is the final project of the Microsoft Power BI Professional Data Analyst Certificate Program. I take on the role of a junior data analyst where Tailwind Traders is fictious manufacturing company that needs a report on its latest sales data. The report must compare the gross and net sales. A proper report completion will lead the company to drive insights that boost prospective sales.
 
@@ -152,7 +157,9 @@ Format this measure as percentage.
 ### Quarterly Profit Margin
 To get a quarterly profit margin measure for the **Sales in USD** table, 
 
-### Quarterly Profit Margin
+### Year-to-Date Profit Margin
+
+### Median Sales
 
 
 ## Technologies Used
