@@ -175,15 +175,39 @@ MedianSales = MEDIAN('Sales in USD'[Gross Revenue USD])
 ### Evaluate Measure Performance
 To ensure that the measures run effectively, their performance will be evaluated using Power BI Desktop's Performance Analyzer. Navigate to the report view and create a card visual for the four measures. In the **View** tab, select **Performance Analyzer**. Start recording and refresh the visuals to examine their performance. The visuals should load under 200 ms as shown below:
 
-<img width="521" height="395" alt="performance-analyzer-on-measures" src="https://github.com/user-attachments/assets/fef72a42-af0d-4cfc-a2dd-44fb92842af6" />
+<p align="center">
+  <img width="521" height="395" alt="performance-analyzer-on-measures" src="https://github.com/user-attachments/assets/fef72a42-af0d-4cfc-a2dd-44fb92842af6" />
+</p>
 
 Remove all card visuals from the report view after verifying satisfactory loading performance.
 
 ## Step 5: Create a Sales Report
-Navigate to the report view. Rename Page 1 as "Sales Overview". 
+Navigate to the report view. Rename Page 1 as "Sales Overview". To make a report encompassing the most critical aspects of the company's sales, distinct visualizations must be implemented. Loyalty points will show where long-term customers are located. Product sales should be shown to determine top performers and low performers. Median sales across countries will show the best markets and areas for improvement. Sales over time will show the overall company growth and card visuals can show key metrics. Specific regional trends can be analyzed better with a slicer. 
 
-### Loyalty Ponts by Country Bar Chart
-Select the **Clustered bar chart** visual from the **Visualizations pane. Set **Loyalty Points** from the **Sales in USD** table as the x-axis and **Country** from the **Countries** table as the y-axis. Title the chart "Loyalty Points by Country" and turn on data labels.
+### Loyalty Points by Country 
+Select the **Clustered bar chart** visual from the **Visualizations** pane. Set **Loyalty Points** from the **Sales in USD** table as the x-axis and **Country** from the **Countries** table as the y-axis. Title the chart "Loyalty Points by Country" and turn on the data labels. The UK is the country with the highest loyalty points and the UAE has lowest amount.
+
+### Quantity Sold by Product 
+Select the **Clustered column chart** visual from the **Visualizations** pane. From the **Sales in USD** table, set **Product Category** as the x-axis and **Quantity Purchased** as the y-axis. Change the title to "Quantity Sold by Product" and turn on data labels. Resize and position the visual to the right of the loyalty points visual. The best performing products belong to the **Gardening** category and the worst performing products belong to the **Home Essentials** category.
+
+### Median Sales Distribution by Country
+Select the **Pie chart** visual from the **Visualizations** pane. From the **Sales in USD** table, set **Median Sales** in the values well and **Country Name** in the legend well. Change the title to "Median Sales Distribution by Country" and sort values in ascending order. Place the visual underneath the **Loyalty Points by Country** visual. Median sales are the lowest in the UK and highest in the UAE.
+
+### Median Sales Over Time
+Select the **Line chart** visual from the **Visualizations** pane. Set **Purchase Date** from the **Purchases** table as the x-axis and **Median Sales** from the **Sales in USD** table as the y-axis. Set the title to "Median Sales Over Time" and turn on data labels. Turn off the x-axis title as the dates are shown. Use the **Analyze** tab to add a trend line. Place the visual underneath the **Quantity Sold by Product** visual. The trend line show a decrease in sales for the purchase period.
+
+### Card Visuals
+Create cards for **Stock**, **MedianSales**, and **Quantity Purchased**. Change the titles by manipulating the text in the **Value** well. Place the cards over the **Loyalty Points by Country** visual.
+
+### Sales Slicer
+Add a slicer visual and place **Country Name** from the **Sales in USD** table in the **Field** well. Remove the header and change the slicer to a tile layout for better visibility. Place the slicer above the **Quantity Sold by Product** visual.
+
+### Sales Report Wrap-up
+At this point, use the Accessible City Park theme to consider visual impairments. The complete report page should appear as follows:
+
+<img width="960" height="537" alt="tt-sales-report" src="https://github.com/user-attachments/assets/dfe3b175-e179-4b44-81f9-e9c0f9150400" />
+
+## Step 6: Create a Profits Report
 
 ## Technologies Used
 - Microsoft Excel
