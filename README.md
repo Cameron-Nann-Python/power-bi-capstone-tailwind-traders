@@ -1,10 +1,5 @@
 # Power BI Capstone Project: Tailwind Traders
 
-## Table of Contents
-
-[Overview](##Overview)
-[Step 3: Design the Data Model](##Step3: Design the Data Model)
-
 ## Overview
 This capstone project is the final project of the Microsoft Power BI Professional Data Analyst Certificate Program. I take on the role of a junior data analyst where Tailwind Traders is fictious manufacturing company that needs a report on its latest sales data. The report must compare the gross and net sales. A proper report completion will lead the company to drive insights that boost prospective sales.
 
@@ -31,7 +26,7 @@ The columns **Quantity Purchased**, **Loyalty Points**, and **Stock** are update
 <img width="1283" height="781" alt="order-id-valid" src="https://github.com/user-attachments/assets/c3cda3a9-2d65-4c05-bf72-9f8f80e875c4" />
 <br></br>
 ### Configure Purchase Data
-Another Excel spreadsheet prepared by Tailwind Traders is the `Purchases.xlsx` file, which contains purchase order data. The same process to transform the data in Power Query is applied. The columns **PurchaseID**, **OrderID**, **Return Policy (Days)**, and **Warranty (Months)** are updated to the **Whole Number** data type. The columns **Purchase Date** and **Last Visited** are updated to the **Date** data type. The columns **Supplier** and **ReturnStatus** are updaetd to the **Text** data type.
+Another Excel spreadsheet prepared by Tailwind Traders is the `Purchases.xlsx` file, which contains purchase order data. The same process to transform the data in Power Query is applied. The columns **PurchaseID**, **OrderID**, **Return Policy (Days)**, and **Warranty (Months)** are updated to the **Whole Number** data type. The columns **Purchase Date** and **Last Visited** are updated to the **Date** data type. The columns **Supplier** and **ReturnStatus** are updated to the **Text** data type.
 
 As Tailwind Traders is only concerned with generated revenue, returned orders should not appear in the report. Uncheck the box for **Returned**.
 
@@ -155,12 +150,40 @@ YearlyProfitMargin = DIVIDE(
 Format this measure as percentage.
 
 ### Quarterly Profit Margin
-To get a quarterly profit margin measure for the **Sales in USD** table, 
+To get the quarterly profit, aggregate the gross and net sales by quarter to date using the `DATESQTD()` function. The DAX logic can be seen below:
+```
+QTD Profit = DIVIDE(
+    CALCULATE(SUM('Sales in USD'[Gross Revenue USD]), DATESQTD('CalendarTable'[Date])),
+    CALCULATE(SUM('Sales in USD'[Net Revenue USD]), DATESQTD('CalendarTable'[Date]))
+)
+```
+Format this measure as percentage.
 
 ### Year-to-Date Profit Margin
+To get the year-to-date profit, use the `TOTALYTD()` function passing **YearlyProfitMargin** as the expression parameter and **Date** from **CalendarDate** table as the dates parameter. The DAX logic can be seen below:
+```
+YTD Profit = TOTALYTD([YearlyProfitMargin], 'CalendarTable'[Date])
+```
+Format this measure as percentage.
 
 ### Median Sales
+The total sales can be calculated using the **Gross Revenue USD** column from the **Sales in USD** table:
+```
+MedianSales = MEDIAN('Sales in USD'[Gross Revenue USD])
+```
 
+### Evaluate Measure Performance
+To ensure that the measures run effectively, their performance will be evaluated using Power BI Desktop's Performance Analyzer. Navigate to the report view and create a card visual for the four measures. In the **View** tab, select **Performance Analyzer**. Start recording and refresh the visuals to examine their performance. The visuals should load under 200 ms as shown below:
+
+<img width="521" height="395" alt="performance-analyzer-on-measures" src="https://github.com/user-attachments/assets/fef72a42-af0d-4cfc-a2dd-44fb92842af6" />
+
+Remove all card visuals from the report view after verifying satisfactory loading performance.
+
+## Step 5: Create a Sales Report
+Navigate to the report view. Rename Page 1 as "Sales Overview". 
+
+### Loyalty Ponts by Country Bar Chart
+Select the **Clustered bar chart** visual from the **Visualizations pane. Set **Loyalty Points** from the **Sales in USD** table as the x-axis and **Country** from the **Countries** table as the y-axis. Title the chart "Loyalty Points by Country" and turn on data labels.
 
 ## Technologies Used
 - Microsoft Excel
