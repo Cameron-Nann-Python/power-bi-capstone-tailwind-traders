@@ -21,7 +21,7 @@ The columns **Gross Product Price**, **Tax per Product**, and **Rating** are upd
 <br></br>
 <img width="1917" height="973" alt="fixed-decimal-column-conversion" src="https://github.com/user-attachments/assets/9f5e1d7c-2081-4304-a620-836e67a561f0" />
 <br></br>
-The columns **Quantity Purchased**, **Loyalty Points**, and **Stock** are updated to the **Whole number** data type and the column **Product Category** is updated to the **Text** data type. Now that the data types are set, the data can be validated. Navigating to the **View** tab, the Order ID shows that each entry is valid.
+The columns **Quantity Purchased**, **Loyalty Points**, and **Stock** are updated to the **Whole number** data type and the column **Product Name** is updated to the **Text** data type. Now that the data types are set, the data can be validated. Navigating to the **View** tab, the Order ID shows that each entry is valid.
 <br></br>
 <img width="1283" height="781" alt="order-id-valid" src="https://github.com/user-attachments/assets/c3cda3a9-2d65-4c05-bf72-9f8f80e875c4" />
 <br></br>
@@ -132,8 +132,10 @@ ADDCOLUMNS(
 A relationship between the **Sales** and **Sales in USD** can be set on the **OrderID** column with a one-to-one cardinality. The cross-filter is set to both, and this is the active relationship.
 
 <p align="center">
-  <img width="827" height="932" alt="image" src="https://github.com/user-attachments/assets/b6e3db10-b9f9-43a5-b6a5-e1dcf6eea78b" />
+  <img width="827" height="932" alt="sales-salesUSD-relationship" src="https://github.com/user-attachments/assets/b6e3db10-b9f9-43a5-b6a5-e1dcf6eea78b" />
 </p>
+
+Ensure that the data type for the **Gross Revenue USD**, **Net Revenue USD**, and **Total Tax USD** columns are set to **Currency**.
 
 ## Step 4: Data Aggregations
 With a complete data model, calculations on the tables can be performed. 
@@ -188,15 +190,15 @@ Navigate to the report view. Rename Page 1 as "Sales Overview". To make a report
 Select the **Clustered bar chart** visual from the **Visualizations** pane. Set **Loyalty Points** from the **Sales in USD** table as the x-axis and **Country** from the **Countries** table as the y-axis. Title the chart "Loyalty Points by Country" and turn on the data labels. The UK is the country with the highest loyalty points and the UAE has lowest amount.
 
 ### Quantity Sold by Product 
-Select the **Clustered column chart** visual from the **Visualizations** pane. From the **Sales in USD** table, set **Product Category** as the x-axis and **Quantity Purchased** as the y-axis. Change the title to "Quantity Sold by Product" and turn on data labels. Resize and position the visual to the right of the loyalty points visual. The best performing products belong to the **Gardening** category and the worst performing products belong to the **Home Essentials** category.
+Select the **Clustered column chart** visual from the **Visualizations** pane. From the **Sales in USD** table, set **Product Name** as the x-axis and **Quantity Purchased** as the y-axis. Change the title to "Quantity Sold by Product" and turn on data labels. Resize and position the visual to the right of the loyalty points visual. The best performing products belong to the **Gardening** category and the worst performing products belong to the **Home Essentials** category.
 
 ### Median Sales Distribution by Country
-Select the **Pie chart** visual from the **Visualizations** pane. From the **Sales in USD** table, set **Median Sales** in the values well and **Country Name** in the legend well. Change the title to "Median Sales Distribution by Country" and sort values in ascending order. Place the visual underneath the **Loyalty Points by Country** visual. Median sales are the lowest in the UK and highest in the UAE.
+Select the **Pie chart** visual from the **Visualizations** pane. From the **Sales in USD** table, set **Median Sales** in the values well and **Country Name** in the legend well. Change the title to "Median Sales Distribution by Country" and sort values in ascending order. Place the visual underneath the **Loyalty Points by Country** visual. Turn off the legend title. Median sales are the lowest in the UK and highest in the UAE.
 
 ### Median Sales Over Time
 Select the **Line chart** visual from the **Visualizations** pane. Set **Purchase Date** from the **Purchases** table as the x-axis and **Median Sales** from the **Sales in USD** table as the y-axis. Set the title to "Median Sales Over Time" and turn on data labels. Turn off the x-axis title as the dates are shown. Use the **Analyze** tab to add a trend line. Place the visual underneath the **Quantity Sold by Product** visual. The trend line show a decrease in sales for the purchase period.
 
-### Card Visuals
+### Sales Card Visuals
 Create cards for **Stock**, **MedianSales**, and **Quantity Purchased**. Change the titles by manipulating the text in the **Value** well. Place the cards over the **Loyalty Points by Country** visual.
 
 ### Sales Slicer
@@ -205,13 +207,97 @@ Add a slicer visual and place **Country Name** from the **Sales in USD** table i
 ### Sales Report Wrap-up
 At this point, use the Accessible City Park theme to consider visual impairments. The complete report page should appear as follows:
 
-<img width="960" height="537" alt="tt-sales-report" src="https://github.com/user-attachments/assets/dfe3b175-e179-4b44-81f9-e9c0f9150400" />
+<img width="952" height="533" alt="tt-sales-report" src="https://github.com/user-attachments/assets/780186c9-b744-4edf-a4ad-c684ccff8a68" />
 
-## Step 6: Create a Profits Report
+## Step 6: Create a Profit Report
+A profit report can be generated on a separate page in the report. Create a new page and name it "Profit Overview". 
+
+### Net Revenue by Product
+Select the **Clustered column chart** visual from the **Visualizations** pane. From the **Sales in USD** table, set **Product Name** as the x-axis and **Net Revenue USD** as the y-axis. Remove the x-axis title, turn on grid lines and data labels, rename the y-axis as "Net Revenue USD", and rename the title as "Net Revenue by Product". Gardening is the top performer while Paint & Decor is the lowest performer.
+
+### Yearly Profit Margin by Country
+Select the **Donut chart** visual from the **Visualizations** pane. From the **Sales in USD** table, set **YearlyProfitMargin** in the **Values** well and **Country Name** in the **Legend** well. Rename the title as "Yearly Profit Margin by Country** and ensure percentages for each category are visible. Sort the chart in ascending order by profit. Turn off the legend title. The UK nets the higest yearly profit margin while France nets the lowest.
+
+### Yearly Profit Margin over Time
+Select the **Area chart** visual from the **Visualizations** pane. From the **Sales in USD** table, set **YearlyProfitMargin** as the y-axis. From the **Purchases** Table, set the **Purchase Date** as the x-axis, remove the x-axis title, turn on grid lines, and rename the title as "Yearly Profit Margin over Time". There are two noticeable spikes in profit gain during October. When clicking on the first spike, the point can be right-clicked, and hovering over the **Analyze** dropdown brings up the "explain the increase" command. These granular visuals can provide additional insights on profit trends:
+
+<p align="center">
+  <img width="727" height="798" alt="profit-spike-explanation" src="https://github.com/user-attachments/assets/2e7cda5d-8569-44ca-a05d-7d07a8b9dc77" />
+</p>
+
+### Profit Card Visuals, Gross Revenue KPI, and Time Slicer
+Create card visuals for **YTD Profit** and **Net Net Revenue USD**. Change the titles accordingly. Make a KPI visual for **Gross Revenue USD** and set the trend axis with **Purchase Date**. Add a slicer and use **Purchase Date** for the **Field** well with a style of "Between".
+
+### Profit Report Wrap-up
+The complete profit report page should be appear as follows:
+
+<img width="951" height="533" alt="tt-profit-report" src="https://github.com/user-attachments/assets/4fc8e9c9-14a8-49cc-9b87-0d3200634833" />
+
+## Step 7: Executive Dashboard
+
+Before pinning visuals to a dashboard, the font needs to be resized for mobile layout. Choose the "Edit mobile layout" option in Power BI Desktop. Add visuals to the mobile layout. Change the font size of the value to 16 and make sure the font size for the label 12. Ensure text wrapping for the label and lower font sizes for longer labels as needed. 
+
+<img width="1861" height="770" alt="adjust-fontsize" src="https://github.com/user-attachments/assets/4e6ef638-d541-43c4-bfad-36f5b0d90f95" />
+
+Open Power BI Service and enter a workspace. Publish the report to the workspace (this report is called `tailwind-traders-sales.pbix`. Within the workspace, create a dashboard named "Tailwind Traders Executive Dashboard".
+
+### Pin Visuals to Dashboard
+From the Sales Overview, pin the following visuals to the dashboard:
+- Loyalty Points by Country bar chart
+- Quantity Sold by Product column chart
+- Median Sales Distribution by Country pie chart
+- Media Sales Over Time line chart
+- Sum of Stock card
+- Sum of Quantity Purchasedcard
+- Median sales card
+
+From the Profit Overview, pin the following visuals to the dashboard:
+- Net Revenue by Product column chart
+- Yearly Profit Margin by Country donut chart
+- Year Profit Margin over Time area chart
+- YTD Profit card
+- Sum of Net Revenue USD card
+- Sum of Gross Revenue USD KPI
+
+### Configure Mobile Layout 
+Add the card visuals and core visualizations and expand their size as needed.
+
+## Step 8: Configure Alerts and Subscriptions
+Navigate back to the web layout for the dashboard.
+
+### Create an Alert for the Gross Revenue KPI
+For the Gross Revenue KPI:
+- access the Manage Alerts menu for the Sum of Gross Revenue USD KPI tile.
+- create a new alert **Gross Revenue USD below $400**
+- set the threshold at $400
+- set a frequency of at most every 24 hours
+
+### Create a Subscription for the Sales Overview Tab
+Go to the Sales Overview tab in the report and create a subscription with this set-up:
+- create a subscription for the Sales Overview report with the following configurations:
+- name the subscription "Sales Weekly Summary"
+- set the **Start date** to the current date
+- set the **End date** to 12/31/2025
+- select Weekly for the frequency and Monday for days of the week
+- set **Scheduled time** to 5:00 AM.
+  
+In the report page dropdown, ensure toggles switches are on for **Permission to view the report in Power BI**, **Link to report in Power BI**, and **Link to report in Power BI**. Activate the subscription.
+
+### Create a Subscription for the Profit Overview Tab
+Go to the Profit Overview tab in the report and create a subscription with this set-up:
+- create a subscription for the Sales Overview report with the following configurations:
+- name the subscription "Profit Weekly Summary"
+- set the **Start date** to the current date
+- set the **End date** to 12/31/2025
+- select Weekly for frequency and Monday, Wednesday, and Friday for days of the week
+- set **Scheduled time** to 6:00 AM.
+
+In the report page dropdown, ensure toggles switches are on for **Permission to view the report in Power BI**, **Link to report in Power BI**, and **Link to report in Power BI**. Activate the subscription.
 
 ## Technologies Used
 - Microsoft Excel
 - Power BI Desktop
+- Power BI Service
 - Python 3.13.3
 - Pandas
 
