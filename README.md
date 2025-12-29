@@ -1,7 +1,7 @@
 # Power BI Capstone Project: Tailwind Traders
 
 ## Overview
-This capstone project is the final project of the Microsoft Power BI Professional Data Analyst Certificate Program. I take on the role of a junior data analyst where Tailwind Traders is fictious manufacturing company that needs a report on its latest sales data. The report must compare the gross and net sales. A proper report completion will lead the company to drive insights that boost prospective sales.
+This capstone project is the final project of the Microsoft Power BI Professional Data Analyst Certificate Program. I take on the role of a junior data analyst where Tailwind Traders is fictious manufacturing company that needs a report on its latest sales data. The report must compare the gross and net sales. A proper report completion will lead the company to drive insights that boost prospective sales. A sales manager will be able to leverage this report to see drops and raises in products ahead of time, and troubleshoot issues with low performing products or create targeted marketing campaigns for latent high performers.
 
 ## Step 1: Preparing Excel Data
 The company sales data is stored in Excel file called `Tailwind-Traders-Sales.xlsx`. The file initially does not contain data on gross sales, so a calculated column named "Gross Revenue" can be added using **=E2*G2**.
